@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>رامي & راما | دعوتنا</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:#f5f0e7;
+  font-family:Arial, sans-serif;
+  overflow-x:hidden;
+}
+
+/* كل واجهة */
+.page{
+  position:relative;
+  width:100%;
+  max-width:500px;
+  margin:auto;
+  overflow:hidden;
+  line-height:0;
+}
+
+.page img{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+/* =========================
+   شاشة البداية
+========================= */
+
+#cover{
+  min-height:100vh;
+  background:#eee6d8;
+}
+
+#cover img{
+  width:100%;
+  min-height:100vh;
+  object-fit:cover;
+}
+
+/* طبقة زر فتح الدعوة */
+.cover-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  padding-bottom:12vh;
+  background:linear-gradient(
+    to bottom,
+    transparent 55%,
+    rgba(0,0,0,.10)
+  );
+}
+
+.open-btn{
+  border:1px solid rgba(255,255,255,.85);
+  background:rgba(255,255,255,.90);
+  color:#29251f;
+  padding:15px 35px;
+  border-radius:50px;
+  font-size:18px;
+  font-family:inherit;
+  cursor:pointer;
+  box-shadow:0 8px 30px rgba(0,0,0,.18);
+  backdrop-filter:blur(6px);
+  transition:.3s;
+  line-height:1.4;
+}
+
+.open-btn:hover{
+  transform:translateY(-3px);
+}
+
+/* حركة فتح الغلاف */
+#cover.opening{
+  animation:coverOpen 1.3s ease forwards;
+}
+
+@keyframes coverOpen{
+  0%{
+    opacity:1;
+    transform:scale(1);
+  }
+  100%{
+    opacity:0;
+    transform:scale(1.08);
+  }
+}
+
+/* =========================
+   محتوى الدعوة
+========================= */
+
+#invitation{
+  display:none;
+  opacity:0;
+}
+
+#invitation.show{
+  display:block;
+  animation:showInvitation 1.3s ease forwards;
+}
+
+@keyframes showInvitation{
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =========================
+   العد التنازلي الحقيقي
+========================= */
+
+.countdown-page{
+  position:relative;
+}
+
+.timer{
+  position:absolute;
+  left:50%;
+  bottom:10%;
+  transform:translateX(-50%);
+
+  width:92%;
+  display:flex;
+  justify-content:center;
+  gap:7px;
+
+  direction:ltr;
+  line-height:1.2;
+}
+
+.time-box{
+  width:22%;
+  max-width:90px;
+  padding:12px 4px;
+
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(180,153,99,.45);
+  border-radius:13px;
+
+  text-align:center;
+  box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.number{
+  display:block;
+  color:#25211d;
+  font-size:23px;
+  font-weight:bold;
+}
+
+.label{
+  display:block;
+  color:#6e6254;
+  font-size:11px;
+  margin-top:4px;
+}
+
+/* =========================
+   زر الموقع
+========================= */
+
+.location-page{
+  position:relative;
+}
+
+.map-area{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:7%;
+
+  display:flex;
+  justify-content:center;
+
+  line-height:1.3;
+}
+
+.map-btn{
+  display:inline-block;
+  padding:14px 30px;
+
+  background:rgba(255,255,255,.93);
+  color:#29251f;
+
+  text-decoration:none;
+  font-size:17px;
+
+  border:1px solid rgba(184,155,96,.65);
+  border-radius:40px;
+
+  box-shadow:0 6px 20px rgba(0,0,0,.12);
+}
+
+/* =========================
+   زر الموسيقى
+========================= */
+
+.music-button{
+  position:fixed;
+  width:46px;
+  height:46px;
+  right:18px;
+  bottom:18px;
+
+  z-index:1000;
+
+  border:none;
+  border-radius:50%;
+
+  background:rgba(255,255,255,.92);
+  box-shadow:0 4px 18px rgba(0,0,0,.18);
+
+  font-size:20px;
+  cursor:pointer;
+
+  display:none;
+}
+
+/* نهاية */
+.end-space{
+  height:20px;
+  background:#f5f0e7;
+}
+
+@media(min-width:501px){
+  body{
+    padding:0;
+  }
+
+  .page{
+    box-shadow:0 0 35px rgba(0,0,0,.08);
+  }
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- ========================
+     الغلاف
+======================== -->
+
+<section class="page" id="cover">
+
+  <img src="cover.png" alt="دعوة زفاف رامي وراما">
+
+  <div class="cover-overlay">
+
+    <button class="open-btn" onclick="openInvitation()">
+      افتح الدعوة
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- ========================
+     باقي الدعوة
+======================== -->
+
+<main id="invitation">
+
+  <!-- الأسماء -->
+  <section class="page">
+    <img src="names.png" alt="رامي وراما">
+  </section>
+
+
+  <!-- تفاصيل الحفل -->
+  <section class="page">
+    <img src="details.png" alt="تفاصيل حفل الزفاف">
+  </section>
+
+
+  <!-- العد التنازلي -->
+  <section class="page countdown-page">
+
+    <img src="countdown.png" alt="العد التنازلي">
+
+    <div class="timer">
+
+      <div class="time-box">
+        <span class="number" id="days">00</span>
+        <span class="label">يوم</span>
+      </div>
+
+      <div class="time-box">
+        <span class="number" id="hours">00</span>
+        <span class="label">ساعة</span>
+      </div>
+
+      <div class="time-box">
+        <span class="number" id="minutes">00</span>
+        <span class="label">دقيقة</span>
+      </div>
+
+      <div class="time-box">
+        <span class="number" id="seconds">00</span>
+        <span class="label">ثانية</span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- الموقع -->
+  <section class="page location-page">
+
+    <img src="location.png" alt="مكان الحفل">
+
+    <div class="map-area">
+
+      <a
+        class="map-btn"
+        href="https://maps.app.goo.gl/zmc2bnUnn1ui1KEu6"
+        target="_blank"
+        rel="noopener"
+      >
+        📍 افتح الموقع
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- الختام -->
+  <section class="page">
+    <img src="end.png" alt="رامي وراما">
+  </section>
+
+  <div class="end-space"></div>
+
+</main>
+
+
+<!-- ========================
+     الموسيقى
+======================== -->
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<button
+  id="musicButton"
+  class="music-button"
+  onclick="toggleMusic()"
+>
+  ♫
+</button>
+
+
+<script>
+
+/* =========================
+   فتح الدعوة
+========================= */
+
+function openInvitation(){
+
+  const cover = document.getElementById("cover");
+  const invitation = document.getElementById("invitation");
+  const music = document.getElementById("music");
+  const musicButton = document.getElementById("musicButton");
+
+  cover.classList.add("opening");
+
+  /*
+    الموسيقى ستعمل عندما نضيف
+    music.mp3 إلى GitHub
+  */
+
+  music.play().catch(function(){
+    console.log("Music file not added yet.");
+  });
+
+  setTimeout(function(){
+
+    cover.style.display = "none";
+
+    invitation.classList.add("show");
+
+    musicButton.style.display = "block";
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  },1200);
+}
+
+
+/* =========================
+   تشغيل وإيقاف الموسيقى
+========================= */
+
+function toggleMusic(){
+
+  const music = document.getElementById("music");
+  const button = document.getElementById("musicButton");
+
+  if(music.paused){
+
+    music.play();
+
+    button.innerHTML = "♫";
+
+  }else{
+
+    music.pause();
+
+    button.innerHTML = "♪";
+
+  }
+
+}
+
+
+/* =========================
+   العد التنازلي
+
+   الأربعاء
+   26 / 08 / 2026
+   7:00 مساءً
+   توقيت فلسطين
+========================= */
+
+const weddingDate =
+  new Date("2026-08-26T19:00:00+03:00").getTime();
+
+
+function updateCountdown(){
+
+  const now = new Date().getTime();
+
+  let distance = weddingDate - now;
+
+
+  if(distance <= 0){
+
+    document.getElementById("days").innerHTML = "00";
+    document.getElementById("hours").innerHTML = "00";
+    document.getElementById("minutes").innerHTML = "00";
+    document.getElementById("seconds").innerHTML = "00";
+
+    return;
+  }
+
+
+  const days =
+    Math.floor(distance / (1000 * 60 * 60 * 24));
+
+  const hours =
+    Math.floor(
+      (distance % (1000 * 60 * 60 * 24))
+      / (1000 * 60 * 60)
+    );
+
+  const minutes =
+    Math.floor(
+      (distance % (1000 * 60 * 60))
+      / (1000 * 60)
+    );
+
+  const seconds =
+    Math.floor(
+      (distance % (1000 * 60))
+      / 1000
+    );
+
+
+  document.getElementById("days").innerHTML =
+    String(days).padStart(2,"0");
+
+  document.getElementById("hours").innerHTML =
+    String(hours).padStart(2,"0");
+
+  document.getElementById("minutes").innerHTML =
+    String(minutes).padStart(2,"0");
+
+  document.getElementById("seconds").innerHTML =
+    String(seconds).padStart(2,"0");
+
+}
+
+
+updateCountdown();
+
+setInterval(updateCountdown,1000);
+
+</script>
+
+</body>
+</html>
